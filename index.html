@@ -31,8 +31,8 @@
 
 <style type="text/css">
 .leaflet-control {
-max-height: 200px;
-max-width: 400px;
+max-height: 300px;
+max-width: 600px;
 overflow: auto;}
 </style>
 
@@ -68,50 +68,45 @@ overflow: auto;}
 
 	info.onAdd = function (map) {
 		this._div = L.DomUtil.create('div', 'info');
-		this.update();
+		info.showbasic();
 		return this._div;
 	};
+	var selected = null;
 
-	info.update = function (props) {
-		const tract = props ? props.Tract : 0
+	info.showfull = function (props) {
+		const tract = props ? props.Tract : 0;
+
+		const approxLoc = props ? props.ApproxLoc : "";
 		var hzwFocus = hzwSites.features.filter(function (el) {
 			return el.properties.Tract == tract;
 		});
-		/*hzwSites.features.forEach((item) => {
-			console.log('ID: '+ item.properties.Tract)
-			}); */
 
-
-		var HTML = "<b>Hazardous Waste Sites</b></ br><table><th>Address</th><th>Past Uses</th>";
+		var HTML = "<b>Hazardous Waste Sites for "+approxLoc+"</b><br><table><th>Project Name</th><th>Address</th><th>Site Type</th><th>Status</th><th>Past Uses</th>";
 		for(let key in hzwFocus)
 		{
-    		HTML += "<tr><td>"+hzwFocus[key].properties.ADDRESS+"</td><td>"+hzwFocus[key].properties.PAST_USES+"</td></tr>";
+    		HTML += "<tr><td>"+hzwFocus[key].properties.PROJECT_NAME+"</td><td>"+hzwFocus[key].properties.ADDRESS+"</td><td>"+hzwFocus[key].properties.SITE_TYPE+"</td><td>"+hzwFocus[key].properties.STATUS+"</td><td>"+hzwFocus[key].properties.PAST_USES+"</td></tr>";
 		}
 		HTML += "</tr></table>";
-		/*document.getElementById("outputDiv").innerHTML = HTML;*/
-
-		/*
-		var table = document.createElement("table"), row, cellA, cellB;
-  		for (let key in hzwFocus) {
-    		// (C2) ROWS & CELLS
-    		row = table.insertRow();
-    		cellA = row.insertCell();
-    		cellB = row.insertCell();
- 		
-    		// (C3) KEY & VALUE
-    		cellA.innerHTML = hzwFocus[key].properties.ADDRESS;
-    		cellB.innerHTML = hzwFocus[key].properties.PAST_USES;
-  		}*/
-
-		const contents = hzwFocus.length ? HTML : 'Hover over a census tract';
+		const contents = hzwFocus.length ? HTML : 'Hover over/Click a census tract';
 		this._div.innerHTML = contents;
-
-
-    /*this._div.innerHTML = table/*`<h4>Hazardous Waste Sites by Census tract</h4>${contents}`;*/
 	};
 
-	info.addTo(map);
+	info.showbasic = function (props) {
+		const tract = props ? props.Tract : 0;
 
+		const approxLoc = props ? props.ApproxLoc : "";
+
+		var hzwFocus = hzwSites.features.filter(function (el) {
+			return el.properties.Tract == tract;
+		});
+
+		var HTML = "<b>Hazardous Waste Sites for "+approxLoc+"</b> <br> There are "+hzwFocus.length+" sites in this census tract. Click on the tract for the full information about these sites.";
+		const contents = hzwFocus.length ? HTML : 'Hover over/Click a census tract';
+		this._div.innerHTML = contents;
+	};
+
+
+	info.addTo(map);
 
 	// get color depending on % BIPOC
 	function getColor(d) {
@@ -136,7 +131,7 @@ overflow: auto;}
 	}
 
 	function highlightFeature(e) {
-		const layer = e.target;
+		const layer = e;
 
 		layer.setStyle({
 			weight: 5,
@@ -146,8 +141,9 @@ overflow: auto;}
 		});
 
 		/*layer.bringToFront();*/
-
-		info.update(layer.feature.properties);
+		if (selected === null){
+			info.showbasic(layer.feature.properties);
+			}
 	}
 
 	/* global censusData */
@@ -202,20 +198,43 @@ overflow: auto;}
     	}
 	}).addTo(map);
 
+
 	function resetHighlight(e) {
-		geojson.resetStyle(e.target);
-		info.update();
+		const layer = e;
+        if (selected === null || selected.feature.properties.Tract !== layer.feature.properties.Tract) {
+            geojson.resetStyle(layer);
+        }
 	}
 
-	function zoomToFeature(e) {
-		map.fitBounds(e.target.getBounds());
+	function onClick(e) {
+		const layer = e;
+        if (selected !== null) {
+            var previous = selected;
+        }
+		info.showfull(layer.feature.properties);
+		selected = layer;
+		if (previous && selected.feature.properties.Tract !== previous.feature.properties.Tract) {
+			resetHighlight(previous);
+			}
+		else if (previous && selected.feature.properties.Tract == previous.feature.properties.Tract){
+			selected = null;
+			resetHighlight(previous);
+			info.showbasic(previous.feature.properties);
+
+		}
 	}
 
 	function onEachFeature(feature, layer) {
 		layer.on({
-			mouseover: highlightFeature,
-			mouseout: resetHighlight,
-			click: zoomToFeature
+			'mouseover': function (e) {
+				highlightFeature(e.target);
+			},
+			'mouseout': function (e) {
+				resetHighlight(e.target);
+			},
+			'click': function (e) {
+				onClick(e.target);
+			}
 		});
 	}
 
