@@ -283,7 +283,7 @@
     	pointToLayer: function (feature, latlng) {
         	return L.circleMarker(latlng, publicSchoolMarkerOptions);
     	}
-	}).addTo(map1);
+	});//.addTo(map1);
 
 
 	const publicschools2 = L.geoJson(publicSchools, {
@@ -297,7 +297,7 @@
     	pointToLayer: function (feature, latlng) {
         	return L.circleMarker(latlng, charterSchoolMarkerOptions);
     	}
-	}).addTo(map1);
+	});//.addTo(map1);
 
 	const charterschools2 = L.geoJson(charterSchools, {
     	pointToLayer: function (feature, latlng) {
@@ -310,7 +310,7 @@
     	pointToLayer: function (feature, latlng) {
         	return L.circleMarker(latlng, privateSchoolMarkerOptions);
     	}
-	}).addTo(map1);
+	});//.addTo(map1);
 
 	const privateschools2 = L.geoJson(privateSchools, {
     	pointToLayer: function (feature, latlng) {
