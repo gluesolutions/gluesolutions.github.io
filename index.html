@@ -32,7 +32,19 @@
     padding: 10px;
     }
 .info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
-.legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }</style>
+.legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
+.legend .circle{
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  margin-top: 4px;
+  margin-left: 4px;
+
+  display: inline-block;  // added this line
+}
+
+
+</style>
 
 <style type="text/css">
     .leaflet-control {
@@ -516,7 +528,7 @@
 
 		const div = L.DomUtil.create('div', 'info legend');
 		const grades = [0, 0.21, 0.32, 0.45, 0.62, 0.77, 0.90];
-		const labels = [];
+		const labels = ["<b> % BIPOC </b>"];
 		let from, to;
 
 		for (let i = 0; i < grades.length; i++) {
@@ -526,12 +538,12 @@
 			labels.push(`<i style="background:${getColor(from+0.01)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
 		}
 
+        labels.push('<i class="circle" style="background:red"></i> Hazardous Waste Site')
 		div.innerHTML = labels.join('<br>');
 		return div;
 	};
 
 	legend1.addTo(map1);
-
 
 
 	var baseMaps2 = {
@@ -559,7 +571,7 @@
 
 		const div = L.DomUtil.create('div', 'info legend');
 		const grades = [0, 0.21, 0.32, 0.45, 0.62, 0.77, 0.90];
-		const labels = [];
+		const labels = ["<b> % BIPOC </b>"];
 		let from, to;
 
 		for (let i = 0; i < grades.length; i++) {
@@ -568,6 +580,10 @@
 
 			labels.push(`<i style="background:${getColor(from+0.01)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
 		}
+        labels.push('<i class="circle" style="background:red"></i> Hazardous Waste Site')
+        labels.push('<i class="circle" style="background:#FFD700"></i> Public Schools')
+        labels.push('<i class="circle" style="background:#4daf4a"></i> Charter Schools')
+        labels.push('<i class="circle" style="background:#386cb0"></i> Private Schools')
 
 		div.innerHTML = labels.join('<br>');
 		return div;
@@ -595,7 +611,7 @@
 
 		const div = L.DomUtil.create('div', 'info legend');
 		const grades = [0, 0.21, 0.32, 0.45, 0.62, 0.77, 0.90];
-		const labels = [];
+		const labels = ["<b> % BIPOC </b>"];
 		let from, to;
 
 		for (let i = 0; i < grades.length; i++) {
@@ -604,7 +620,7 @@
 
 			labels.push(`<i style="background:${getColor(from+0.01)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
 		}
-
+        labels.push('<i style="background-image: linear-gradient(to right, red, orange)"></i> Density Waste Sites')
 		div.innerHTML = labels.join('<br>');
 		return div;
 	};
