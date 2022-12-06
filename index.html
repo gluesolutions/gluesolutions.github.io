@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<base target="_top">
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<title>Maps</title>
-	
-	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<title>Maps</title>
 
-	<style>
-		html, body {
-			height: 100%;
-			margin: 0;
-		}
-		.leaflet-container {
-			height: 600px;
-			width: 800px;
-			max-width: 100%;
-			max-height: 100%;
-		}
-	</style>
+<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
 
-	<style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+    .leaflet-container {
+        height: 600px;
+        width: 800px;
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+
+<style>
     .map {
     width: 900px; 
     height: 500px;
@@ -35,10 +35,10 @@
 .legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }</style>
 
 <style type="text/css">
-.leaflet-control {
-max-height: 300px;
-max-width: 600px;
-overflow: auto;}
+    .leaflet-control {
+    max-height: 300px;
+    max-width: 600px;
+    overflow: auto;}
 </style>
 
 
@@ -260,6 +260,24 @@ overflow: auto;}
     	fillOpacity: 0.8
 	};
 
+	var charterSchoolMarkerOptions = {
+    	radius: 2,
+    	fillColor: "#4daf4a",
+    	color: "#000",
+    	weight: 0,
+    	opacity: 1,
+    	fillOpacity: 0.8
+	};
+
+	var privateSchoolMarkerOptions = {
+    	radius: 2,
+    	fillColor: "#386cb0",
+    	color: "#000",
+    	weight: 0,
+    	opacity: 1,
+    	fillOpacity: 0.8
+	};
+
 
 	const publicschools1 = L.geoJson(publicSchools, {
     	pointToLayer: function (feature, latlng) {
@@ -277,26 +295,26 @@ overflow: auto;}
 
 	const charterschools1 = L.geoJson(charterSchools, {
     	pointToLayer: function (feature, latlng) {
-        	return L.circleMarker(latlng, publicSchoolMarkerOptions);
+        	return L.circleMarker(latlng, charterSchoolMarkerOptions);
     	}
 	}).addTo(map1);
 
 	const charterschools2 = L.geoJson(charterSchools, {
     	pointToLayer: function (feature, latlng) {
-        	return L.circleMarker(latlng, publicSchoolMarkerOptions);
+        	return L.circleMarker(latlng, charterSchoolMarkerOptions);
     	}
 	}).addTo(map2);
 
 
 	const privateschools1 = L.geoJson(privateSchools, {
     	pointToLayer: function (feature, latlng) {
-        	return L.circleMarker(latlng, publicSchoolMarkerOptions);
+        	return L.circleMarker(latlng, privateSchoolMarkerOptions);
     	}
 	}).addTo(map1);
 
 	const privateschools2 = L.geoJson(privateSchools, {
     	pointToLayer: function (feature, latlng) {
-        	return L.circleMarker(latlng, publicSchoolMarkerOptions);
+        	return L.circleMarker(latlng, privateSchoolMarkerOptions);
     	}
 	}).addTo(map2);
 
