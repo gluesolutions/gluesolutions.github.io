@@ -49,7 +49,7 @@
 <style type="text/css">
     .leaflet-control {
     max-height: 300px;
-    max-width: 600px;
+    max-width: 500px;
     overflow: auto;}
 </style>
 
@@ -620,7 +620,8 @@
 
 			labels.push(`<i style="background:${getColor(from+0.01)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
 		}
-        labels.push('<i style="background-image: linear-gradient(to right, red, orange)"></i> Density Waste Sites')
+        labels.push('<p>')
+        labels.push('<i style="background-image: linear-gradient(to right, red, orange)"></i> Density of Waste Sites')
 		div.innerHTML = labels.join('<br>');
 		return div;
 	};
